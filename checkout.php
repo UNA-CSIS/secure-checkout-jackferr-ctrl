@@ -19,17 +19,22 @@ if ($_SESSION['loggedin'] !== true) {
 }
 
 $message='';
-if ($_SERVER['REQUEST_METHOD']==='POST'){
-    $cardNumber = $_POST['card_number'];
-    $cardType='';
-    
-    if(validateCard($cardNumber, $cardType)){
-        $last4 = substr($cardNumber,-4);
-        $message = "your card $cardType , ending with $last4 has been charged $". number_format($total,2);
-    }else {
-        $message="Invalid card.";
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['card_number'])) {
+        $cardNumber = $_POST['card_number'];
+        $cardType = '';
+
+        if (validateCard($cardNumber, $cardType)) {
+            $last4 = substr($cardNumber, -4);
+            $message = "Your card $cardType, ending with $last4 has been charged $" . number_format($total, 2);
+        } else {
+            $message = "Invalid card.";
+        }
+    } else {
+        $message = "Card number is required.";
     }
 }
+
 ?>
 
 <!DOCTYPE HTML>
@@ -50,12 +55,9 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
             <p>
                 <input type="submit" value="Submit Payment">
             </p>
+            <p><input type="button" value="Return to Home" onclick="window.location.href='index.php'"></p>
         </form>
 
             <p><strong><?= $message ?></strong></p>
-
-        <form method="get" action="index.php">
-            <input type="submit" value="Back to Home">
-        </form>
     </body>
 </html>
