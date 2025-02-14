@@ -1,6 +1,8 @@
 <?php
 session_start();
-$_SESSION['loggedin'] = false;
+if(!isset($_SESSION['loggedin'])){
+    $_SESSION['loggedin'] = false;
+}
 ?>
 <!DOCTYPE HTML>
 <html>
